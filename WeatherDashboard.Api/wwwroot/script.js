@@ -9,7 +9,12 @@ let selected = { city: 'São Paulo', state: 'SP' };
 
 async function fetchJSON(url) {
   try {
-    const r = await fetch(url);
+    const withNoCache = (u) => {
+      const full = new URL(u, location.origin);
+      full.searchParams.set('_', Date.now().toString()); // cache-buster
+      return full.toString();
+    };
+    const r = await fetch(withNoCache(url), { cache: 'no-store' });
     if (!r.ok) {
       console.error(`Request failed ${r.status}: ${url}`);
       return null;
@@ -229,11 +234,27 @@ function drawLabels(ctx, labels, w, h, padding) {
   }
 }
 
+function normalizeSeries(series) {
+  const arr = (series ?? []).filter(v => Number.isFinite(+v)).map(v => +v);
+  if (arr.length === 1) return [arr[0], arr[0]]; // garante linha
+  return arr;
+}
+function normalizeLabels(labels, targetLen) {
+  const arr = Array.isArray(labels) ? labels.slice(0, targetLen) : [];
+  while (arr.length < targetLen) arr.push(arr[arr.length - 1] ?? '');
+  return arr;
+}
+
 function drawTemperatureChart(canvas, labels, temps, mins, maxs) {
   const ctx = canvas.getContext('2d');
   const w = canvas.width = canvas.clientWidth * window.devicePixelRatio;
   const h = canvas.height = canvas.clientHeight * window.devicePixelRatio;
   const pad = 40;
+
+  temps = normalizeSeries(temps);
+  mins = normalizeSeries(mins);
+  maxs = normalizeSeries(maxs);
+  labels = normalizeLabels(labels, Math.max(temps.length, mins.length, maxs.length));
 
   clearCanvas(canvas);
   drawAxes(ctx, w, h, pad);
@@ -271,6 +292,9 @@ function drawHumidityChart(canvas, labels, hums) {
   const w = canvas.width = canvas.clientWidth * window.devicePixelRatio;
   const h = canvas.height = canvas.clientHeight * window.devicePixelRatio;
   const pad = 40;
+
+  hums = normalizeSeries(hums);
+  labels = normalizeLabels(labels, hums.length);
 
   clearCanvas(canvas);
   drawAxes(ctx, w, h, pad);
