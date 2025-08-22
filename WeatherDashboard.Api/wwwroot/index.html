@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Weather Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>Weather Dashboard</h1>
+    <div class="filters">
+      <label>
+        Capital
+        <select id="citySelect"></select>
+      </label>
+      <label>
+        Início
+        <input type="date" id="startDate" />
+      </label>
+      <label>
+        Fim
+        <input type="date" id="endDate" />
+      </label>
+      <button id="btnApply">Atualizar</button>
+      <button id="btnToday">Hoje</button>
+    </div>
+  </header>
+
+  <main class="content">
+    <section class="stats">
+      <div class="card">
+        <div class="label">Temp. Máx (°C)</div>
+        <div class="value" id="statMaxTemp">-</div>
+      </div>
+      <div class="card">
+        <div class="label">Temp. Mín (°C)</div>
+        <div class="value" id="statMinTemp">-</div>
+      </div>
+      <div class="card">
+        <div class="label">Temp. Média (°C)</div>
+        <div class="value" id="statAvgTemp">-</div>
+      </div>
+      <div class="card">
+        <div class="label">Umidade Média (%)</div>
+        <div class="value" id="statAvgHumidity">-</div>
+      </div>
+      <div class="card">
+        <div class="label">Pressão Média (hPa)</div>
+        <div class="value" id="statAvgPressure">-</div>
+      </div>
+      <div class="card">
+        <div class="label">Vento Médio (m/s)</div>
+        <div class="value" id="statAvgWind">-</div>
+      </div>
+    </section>
+
+    <section class="charts">
+      <div class="chart-card">
+        <h3>Temperatura (°C)</h3>
+        <canvas id="tempChart" height="220"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Umidade (%)</h3>
+        <canvas id="humidityChart" height="220"></canvas>
+      </div>
+    </section>
+
+    <section class="current">
+      <h3>Clima Atual</h3>
+      <div id="currentBlock" class="current-grid">
+        <div><span>Cidade:</span> <strong id="curCity">-</strong></div>
+        <div><span>Descrição:</span> <strong id="curDesc">-</strong></div>
+        <div><span>Temp:</span> <strong id="curTemp">-</strong></div>
+        <div><span>Vento:</span> <strong id="curWind">-</strong></div>
+        <div><span>Nuvens:</span> <strong id="curClouds">-</strong></div>
+        <div><span>Atualizado:</span> <strong id="curTs">-</strong></div>
+      </div>
+    </section>
+
+    <section class="docs">
+      <details>
+        <summary>Diagrama de Arquitetura (Física e Lógica)</summary>
+        <div class="diagram">
+          <svg viewBox="0 0 800 340" role="img" aria-label="Architecture Diagram">
+            <rect x="10" y="10" width="780" height="320" rx="8" ry="8" fill="#0f172a" stroke="#334155" />
+            <rect x="40" y="50" width="220" height="100" rx="6" fill="#1e293b" stroke="#475569"/>
+            <text x="150" y="80" fill="#e2e8f0" text-anchor="middle" font-size="14">Cliente (Browser)</text>
+            <text x="150" y="105" fill="#94a3b8" text-anchor="middle" font-size="12">HTML5 + CSS + JS (Canvas)</text>
+            <text x="150" y="125" fill="#94a3b8" text-anchor="middle" font-size="12">Fetch REST (JSON)</text>
+            <rect x="290" y="50" width="220" height="100" rx="6" fill="#1e293b" stroke="#475569"/>
+            <text x="400" y="80" fill="#e2e8f0" text-anchor="middle" font-size="14">Backend (.NET 8 Web API)</text>
+            <text x="400" y="105" fill="#94a3b8" text-anchor="middle" font-size="12">Controllers + Services</text>
+            <text x="400" y="125" fill="#94a3b8" text-anchor="middle" font-size="12">Swagger + Static Files</text>
+            <rect x="540" y="50" width="220" height="100" rx="6" fill="#1e293b" stroke="#475569"/>
+            <text x="650" y="80" fill="#e2e8f0" text-anchor="middle" font-size="14">Base de Dados</text>
+            <text x="650" y="105" fill="#94a3b8" text-anchor="middle" font-size="12">EF Core InMemory</text>
+            <text x="650" y="125" fill="#94a3b8" text-anchor="middle" font-size="12">Persistência de consultas</text>
+            <rect x="290" y="200" width="220" height="100" rx="6" fill="#1e293b" stroke="#475569"/>
+            <text x="400" y="230" fill="#e2e8f0" text-anchor="middle" font-size="14">OpenWeatherMap API</text>
+            <text x="400" y="255" fill="#94a3b8" text-anchor="middle" font-size="12">/data/2.5/weather</text>
+            <text x="400" y="275" fill="#94a3b8" text-anchor="middle" font-size="12">Chave: config</text>
+            <line x1="260" y1="100" x2="290" y2="100" stroke="#93c5fd" stroke-width="2" marker-end="url(#m)"/>
+            <line x1="510" y1="100" x2="540" y2="100" stroke="#93c5fd" stroke-width="2" marker-end="url(#m)"/>
+            <line x1="400" y1="150" x2="400" y2="200" stroke="#93c5fd" stroke-width="2" marker-end="url(#m)"/>
+            <defs>
+              <marker id="m" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                <polygon points="0 0, 6 3, 0 6" fill="#93c5fd" />
+              </marker>
+            </defs>
+          </svg>
+        </div>
+      </details>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
